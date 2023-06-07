@@ -1,0 +1,35 @@
+﻿@using AuctionApp.Application.DTOs.Responses.ProductResponses
+@model GetProductByIdResponse
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="single-product mt-150 mb-150">
+    <div class="container">
+        <div class="row">
+                <div class="col-md-5">
+                <div class="single-product-img">
+                    <img src="https://loremflickr.com/320/240/art" style="height:480px" alt="">
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="single-product-content">
+                    <h3 >
+                        @Model.Name
+                    </h3>
+                    <p class="single-product-pricing"><span>Açılış Fiyatı</span> @Model.BeginPrice</p>
+                    <p>
+                        @Model.Description
+                    </p>
+
+                    <p class="single-product-pricing"><span>Başlangıç Tarifi</span>@Model.BeginDate</p>
+                            
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end single product -->
+
+

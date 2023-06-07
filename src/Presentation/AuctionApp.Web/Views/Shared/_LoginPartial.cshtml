@@ -1,0 +1,22 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AuctionApp.Domain.Entities.AppUser> SignInManager
+@inject UserManager<AuctionApp.Domain.Entities.AppUser> UserManager
+
+
+@if (SignInManager.IsSignedIn(User))
+{
+
+    <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <a> <button type="submit" class="nav-link btn btn-link text-dark">Logout</button></a>
+       
+    </form>
+
+}
+else
+{
+
+    <a asp-area="Identity" asp-page="/Account/Register">Register</a>
+    <a asp-area="Identity" asp-page="/Account/Login">Login</a>
+
+}

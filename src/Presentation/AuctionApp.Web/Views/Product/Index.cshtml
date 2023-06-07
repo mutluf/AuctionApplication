@@ -1,0 +1,50 @@
+﻿@using AuctionApp.Application.DTOs
+@model IEnumerable<ProductDTO>
+
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+    <div class="row" style="height:480px; width:auto">
+        <div class="col-lg-8 offset-lg-2 text-center">
+            <div class="section-title">
+                <h3><span class="orange-text">Müzayede</span>  Ürünleri</h3>
+            </div>
+
+            <div class="row">
+
+                @foreach (var item in Model)
+                {
+                    <input type="hidden" id="Id" value="@item.Id" />
+
+
+                    <div class="col-lg-4 col-md-6 text-center">
+                        <div class="single-product-item">
+                            <div class="product-image">
+                                <a asp-controller="Product" asp-action="ProductDetail" asp-route-id=@item.Id>
+                                    <img src="https://loremflickr.com/320/240/art" style="height:240px; width:auto" />
+                                </a>
+                            </div>
+                            <h3>@item.Name</h3>
+                            <p><span>Başlangıç Tarihi: </span>@item.BeginDate </p>
+
+
+                            <a asp-controller="Product" asp-action="ProductDetail" asp-route-id=@item.Id class="cart-btn" style="background-color:slategray !important">
+                                Detayı Görüntüle
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+@section scripts
+	{
+
+}

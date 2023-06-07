@@ -1,0 +1,37 @@
+﻿@model AuctionApp.Application.DTOs.ProductDTO
+
+@{
+    ViewBag.Title = "Poster Güncelle";
+}
+
+<h2>Ürün Güncelle</h2>
+
+
+
+<form asp-area="admin" asp-controller="Product" asp-action="UpdateProduct" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Image"></label>
+        <input asp-for="Image" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="BeginPrice"></label>
+        <input asp-for="BeginPrice" class="form-control" />
+    </div>
+
+   
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+</form>
