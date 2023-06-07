@@ -34,6 +34,11 @@
                             <p class="product-price"><span>Açılış Fiyatı</span> @item.Product.BeginPrice </p>
 							<a asp-controller="Auction" asp-action="AuctionDetail" asp-route-id=@item.Id class="cart-btn">Müzayedeye Katıl <i class="fas fa-door-open"></i></a>
 							
+
+							<form asp-action="RegisterAuction" method="post">
+								<input type="hidden" name="auctionId" value=@item.Id>
+								<button type="submit">Onayla</button>
+							</form>
                            
                         </div>
 					</div>
