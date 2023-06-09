@@ -1,32 +1,26 @@
-﻿using AuctionApp.Application.DTOs.Requests.AppUserAuctionRequest;
+﻿using AuctionApp.Application.BackgroundService;
+using AuctionApp.Application.DTOs.Requests.AppUserAuctionRequest;
 using AuctionApp.Application.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace AuctionApp.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IMediator _mediator;
-		private readonly IAuctionRepository _auctionRepository;
-		public HomeController(IMediator mediator, IAuctionRepository auctionRepository)
-		{
-			_mediator = mediator;
-			_auctionRepository = auctionRepository;
-		}
-		public async Task<IActionResult> Index()
+       private readonly IUserBackgroundJob _job;
+
+        public HomeController(IUserBackgroundJob job)
         {
-			var data = _auctionRepository.Table.Include(p => p.Product).FirstOrDefault(a => a.Id == 2);
-			//CreateAppUserAuctionRequest request = new()
-			//{
-			//    AppUserId = 1,
-			//    AuctionId = 2
-			//};
+            _job = job;
+        }
 
-
-			//await _mediator.Send(request);
-			return View();
+        public async Task<IActionResult> Index()
+        {
+            _job.AddEnque(() => Console.WriteLine("selam"));
+            return View();
         }
 
 

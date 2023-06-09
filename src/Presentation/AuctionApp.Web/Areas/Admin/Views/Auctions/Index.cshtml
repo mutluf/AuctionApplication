@@ -1,5 +1,5 @@
-﻿@using AuctionApp.Domain.Entities
-@model List<Product>
+﻿@using AuctionApp.Application.DTOs
+@model IEnumerable<AuctionDTO>
 @{
 	ViewData["Title"] = "Index";
 	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
@@ -10,83 +10,110 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Item List</title>
+	<title>Müzayede Listesi</title>
 	<style>
 		/* Add your desired CSS styles here */
 	</style>
 </head>
 <body>
-	<div class="container-xxl flex-grow-1 container-p-y">
-		<div class="card">
-			<h5 class="card-header">Table Basic</h5>
-			<div class="table-responsive text-nowrap">
-				<table class="table" style="min-height:200px">
-					<thead>
-						<tr>
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="card">
+            <h5 class="card-header">Table Basic</h5>
+            <div class="table-responsive text-nowrap">
+                <table class="table" style="min-height:200px">
+                    <thead>
+                        <tr>
 
-							<th>Name</th>
-							<th>Description</th>
-							<th>Image</th>
-							<th>Price</th>
-							<th>Sold</th>
+                            <th>Başlık</th>
+                            <th>Ürün İsmi</th>
+                            <th>Başlangıç Fiyatı</th>
+                            <th>Açıklama</th>
+                            <th>Başlangıç Tarihi</th>
+                            <th>Bitiş Tarihi</th>
 
-						</tr>
-					</thead>
-					<tbody class="table-border-bottom-0">
-						<tr>
-							@foreach (var item in Model)
-							{
-							<tr>
-								<td>@item.Id</td>
-								<td>@item.Name</td>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                        <tr>
+                            @foreach (var item in Model)
+                            {
+                            <tr>
+                                <td>@item.Title</td>
+                                <td>@item.Product.Name</td>
 
 
-								<td>@item.Description</td>
-								<td>@item.Image</td>
-								<td>@item.BeginPrice</td>
-								<td>@item.BeginPrice</td>
-								<td>
-									<div class="dropdown">
-										<button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-											<i class="bx bx-dots-vertical-rounded"></i>
-										</button>
-										<div class="dropdown-menu">
-											<a class="dropdown-item"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-											<a class="dropdown-item"><i class="bx bx-trash me-1"></i> Delete</a>
-										</div>
-									</div>
-								</td>
-							</tr>
-							}
+                                <td>@item.Product.BeginPrice</td>
+                                <td>@item.Product.Description</td>
+                                
+                                <td>@item.Product.BeginDate </td>
+                                <td>@item.ExpirationTime </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <button id=@item.Id name="edit-button" class="dropdown-item">
+                                                <i class="bx bx-edit me-1">Güncelle </i>
+                                            </button>
+                                            <a asp-area="admin" asp-controller="Auctions" asp-action="DeleteAuction" asp-route-id=@item.Id class="dropdown-item"><i class="bx bx-trash me-1"></i> Delete</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
 
-							@*<td><span class="badge bg-label-primary me-1">Active</span></td>*@
+                            @*<td><span class="badge bg-label-primary me-1">Active</span></td>*@
 
-					</tbody>
-				</table>
+                        </tbody>
+                    </table>
 
-			</div>
+                </div>
 
-		</div>
-		<div class="demo-inline-spacing">
-			<button id="modal-buton" type="button" class="btn btn-success">
-				<span class="tf-icons bx bx-anchor"></span>&nbsp; Ürün Ekle
-			</button>
-			<button type="button" class="btn btn-danger">
-				<span class="tf-icons bx bx-bell"></span>&nbsp; Ürün Güncelle
-			</button>
-		</div>
-	</div>
+            </div>
+            <div class="demo-inline-spacing">
+                <button id="modal-buton" type="button" class="btn btn-success">
+                    <span class="tf-icons bx bx-anchor"></span>&nbsp; Müzayede Ekle
+                </button>
 
-	@section scripts
+            </div>
+        </div>
+
+        
+        @section scripts
 		{
-		<script>
-			$(function () {
-				$('#modal-buton').click(function () {
-					$('#lg-modal').load('/admin/Auctions/CreateAuction');
-					$('#largeModal').modal('show');
-				});
-			});
-		</script>
-	}
-</body>
+            <script>
+                //$(document).ready(function () {
+                //	$('#example').DataTable();
+                //});
+
+                $(function () {
+                    $('#modal-buton').click(function () {
+                        $('#lg-modal').load('/admin/Auctions/CreateAuction');
+                        $('#largeModal').modal('show');
+                    });
+                });
+
+                $(function () {
+                    $('[name="edit-button"]').click(function () {
+                        var id = $(this).attr("id"); // atribute alanın değerini al
+                        $('#lg-modal').load('/admin/Auctions/UpdateAuction/' + id);
+                        $('#largeModal').modal('show');
+                    });
+                });
+
+                                    //$(function () {
+                                    //	$('#delete').click(function () {
+                                    //		$('#lg-modal').load('/admin/Product/DeleteProduct');
+                                    //		$('#largeModal').modal('show');
+                                    //	});
+                                    //});
+
+
+            </script>
+
+
+
+        }
+    </body>
 </html>

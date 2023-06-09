@@ -14,5 +14,6 @@ namespace AuctionApp.Domain.Entities
         public int ProductId { get; set; }
         public DateTime ExpirationTime { get; set; }
         public ICollection<AppUserAuction> AppUserAuctions { get; set; }
+        public ICollection<Offer> Offers { get; set; }  
     }
 }

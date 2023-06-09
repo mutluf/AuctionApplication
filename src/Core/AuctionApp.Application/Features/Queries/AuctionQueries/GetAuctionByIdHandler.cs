@@ -23,8 +23,19 @@ namespace AuctionApp.Application.Features.Queries.AuctionQueries
 
         public async Task<GetAuctionByIdResponse> Handle(GetAuctionByIdRequest request, CancellationToken cancellationToken)
         {
-            var auction = _auctionRepository.Table.Include(p => p.Product).FirstOrDefault(r => r.Id == request.Id);
+            var auction = _auctionRepository.Table.Include(p => p.Product).Include(o => o.Offers.OrderByDescending(o => o.OfferPrice)).FirstOrDefault(auction => auction.Id == request.Id);
+            int maxOffer = 0;
+            try
+            {
+                maxOffer = auction.Offers.Max(o => o.OfferPrice);
+            }
+            catch (Exception)
+            {
+
+                
+            }
             var auctionResponse = _mapper.Map<GetAuctionByIdResponse>(auction);
+            auctionResponse.OfferPrice = maxOffer;
 
             return auctionResponse;
         }

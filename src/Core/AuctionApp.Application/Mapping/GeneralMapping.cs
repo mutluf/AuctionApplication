@@ -28,6 +28,7 @@ namespace StockTracking.Application.Mapping
             CreateMap<CreateAuctionRequest, Auction>().ReverseMap();
 
             CreateMap<CreateAppUserAuctionRequest, AppUserAuction>().ReverseMap();
+            CreateMap<UpdateAuctionRequest, Auction>().ReverseMap();
         }
     }
 }

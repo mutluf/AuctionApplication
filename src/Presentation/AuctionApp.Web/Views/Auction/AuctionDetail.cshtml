@@ -1,5 +1,6 @@
 ﻿@using AuctionApp.Application.DTOs.Responses.AuctionResponses
 @model GetAuctionByIdResponse
+@inject IHttpContextAccessor HttpContextAccessor
 @{
     ViewData["Title"] = "AuctionDetail";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -10,64 +11,164 @@
         <div class="row">
             <div class="col-md-5">
                 <div class="single-product-img">
-                    <img src="https://loremflickr.com/320/240/art" style="height:480px" alt="">
+                    <img src="https://loremflickr.com/600/600/art" style="height:480px" alt="">
                 </div>
             </div>
-           @* <input type="hidden" asp-for="Id" asp-action="Offer"/>*@
+            @* <input type="hidden" asp-for="Id" asp-action="Offer"/>*@
             <div class="col-md-7">
                 <div class="single-product-content">
                     <h3>
                         @Model.Title
                     </h3>
-                    <p class="single-product-pricing"><span>Açılış Fiyatı</span>@Model.Product.BeginPrice</p>
+                    <span>Açılış Fiyatı</span>
+                    <p class="single-product-pricing">@Model.Product.BeginPrice</p>
+                    <span>Şu Anki Teklif</span>
+                    <p id="offer" class="single-product-pricing">@Model.OfferPrice</p>
                     <p>@Model.Product.Description</p>
                     <div class="single-product-form">
 
 
 
-                        <form asp-action="Offer" method="post">
-                            <input type="hidden" name="AuctionId" value=@Model.Id>
-                            <input type="number" placeholder="0" asp-for="OfferPrice" />
+                        <form id="offerForm">
 
-                            <button type="submit" class="btn btn-primary">
+                            <input id="inputVeri" class="form-control" type="number" placeholder="0" name="OfferPrice" />
+                            <input type="hidden" name="AuctionId" value=@Model.Id>
+                            <input type="hidden" name="beginPrice" value=@Model.Product.BeginPrice>
+                            <input id="lastOfferPrice" type="hidden" name="lastOfferPrice" value="@Model.OfferPrice">
+
+                            <button onclick="submitForm()" type="button" class="btn btn-primary ">
+
                                 Teklif Ver
                                 <i class="fas fa-handshake"></i>
                             </button>
                         </form>
-                        
-                                         
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- end single product -->
-@*<!-- more products -->
-<div class="more-products mb-150">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 offset-lg-2 text-center">
-                <div class="section-title">
-                    <h3><span class="orange-text">Related</span> Products</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, fuga quas itaque eveniet beatae optio.</p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-4 col-md-6 text-center">
-                <div class="single-product-item">
-                    <div class="product-image">
-                        <a href="single-product.html"><img src="~/assets/img/products/product-img-1.jpg" alt=""></a>
+
+                        <div class="more-products mb-150">
+                            <br />
+                            <h5 color="purple" id="lastOffer"></h5>
+                        </div>
+
+
+
                     </div>
-                    <h3>Strawberry</h3>
-                    <p class="product-price"><span>Per Kg</span> 85$ </p>
-                    
                 </div>
             </div>
-
-
         </div>
     </div>
-</div>*@
 
-<!-- end more products -->
+
+
+
+    @section scripts
+    {
+        @*<script>
+                $(function () {
+                    $("#buton").click(function () {
+                        var yeniMetin = $("#inputVeri").val(); // Kullanıcıdan girilen metni al
+                        $("#offer").text(yeniMetin); // Metni değiştir
+                    });
+                });
+            </script>*@
+        <script>
+            function submitForm() {
+               
+
+                var formData = $('#offerForm').serializeArray();
+                
+                var jsonData = {};
+                $(formData).each(function (index, obj) {
+                    jsonData[obj.name] = obj.value;
+                });
+                console.log(jsonData);
+                var data1 = JSON.stringify(jsonData)
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Auction/Offer",
+                    contentType: "application/json; charset=utf-8",
+                    data: data1,
+                    success: function (data) {
+                        console.log(data.status)
+                        if (data.status == true) {
+                            toastr.success(data.message);
+                        }
+                        else {
+                            toastr.warning(data.message);
+                        }
+
+
+                    },
+                    error: function (data) {
+                        alert("hata")
+                    }
+
+                });
+
+                $("#offerForm").trigger("reset");
+            }
+
+            let connection = new signalR.HubConnectionBuilder()
+                .withUrl("/offershub")
+                .build();
+            connection.start();
+            connection.on("receiveMessage", data => {
+                var json = JSON.parse(data);
+                $('#offer').text(json.OfferPrice);
+                $('#lastOfferPrice').val(json.OfferPrice);
+                var offer = `${json.UserName} isimli kullanıcının teklifi:&nbsp &nbsp $${json.OfferPrice}`;
+
+                $("#lastOffer").html(offer);
+
+            });
+
+
+
+
+
+        </script>
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- end single product -->
+    @*<!-- more products -->
+        <div class="more-products mb-150">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 offset-lg-2 text-center">
+                        <div class="section-title">
+                            <h3><span class="orange-text">Related</span> Products</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, fuga quas itaque eveniet beatae optio.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 text-center">
+                        <div class="single-product-item">
+                            <div class="product-image">
+                                <a href="single-product.html"><img src="~/assets/img/products/product-img-1.jpg" alt=""></a>
+                            </div>
+                            <h3>Strawberry</h3>
+                            <p class="product-price"><span>Per Kg</span> 85$ </p>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>*@
+
+    <!-- end more products -->

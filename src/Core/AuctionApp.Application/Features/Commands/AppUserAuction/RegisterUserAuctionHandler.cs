@@ -23,19 +23,34 @@ namespace AuctionApp.Application.Features.Commands
 
         public async Task<Unit> Handle(RegisterUserAuctionRequest request, CancellationToken cancellationToken)
         {
-            var name = _httpContextAccessor.HttpContext.User.Identity.Name;
-            var user = await _userManager.FindByNameAsync(name);
-
-           
-
-            AppUserAuction userAuction = new() 
+            var name = _httpContextAccessor.HttpContext.User?.Identity?.Name;
+            AppUser user = new();
+            if (name!=null)
             {
-                AuctionId = request.AuctionId,
-                AppUserId = user.Id
-            };
+                 user = await _userManager.FindByNameAsync(name);
+            }
 
-            await _userAuctionRepository.AddAysnc(userAuction);
-            await _userAuctionRepository.SaveAysnc();
+
+
+            if (user!=null)
+            {
+                AppUserAuction userAuction = new()
+                {
+                    AuctionId = request.AuctionId,
+                    AppUserId = user.Id
+                };
+
+                await _userAuctionRepository.AddAysnc(userAuction);
+                try
+                {
+                    await _userAuctionRepository.SaveAysnc();
+                }
+                catch (Exception)
+                {
+
+
+                }
+            }
 
             return Unit.Value;
         }

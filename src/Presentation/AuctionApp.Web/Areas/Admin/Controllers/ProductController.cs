@@ -31,9 +31,9 @@ namespace AuctionApp.Web.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public IActionResult CreateProduct(CreateProductRequest request)
+        public async Task<IActionResult> CreateProduct(CreateProductRequest request)
         {
-            _mediator.Send(request);
+            await _mediator.Send(request);
             return RedirectToAction("Index");
         }
 
