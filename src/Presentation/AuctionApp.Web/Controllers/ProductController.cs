@@ -20,7 +20,7 @@ namespace AuctionApp.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            GetAllProductRequest request = new();
+            GetIsNotInAuctionProductRequest request = new();
             var products =await _mediator.Send(request);
 
             return View(products.Products);
