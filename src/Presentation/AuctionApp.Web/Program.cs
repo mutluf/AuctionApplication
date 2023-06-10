@@ -73,7 +73,7 @@ app.MapRazorPages();
 app.UseEndpoints(endpoints =>
 {
 
-    endpoints.MapHub<ProductHub>("/offershub");
+    endpoints.MapHub<OfferHub>("/offershub");
 });
 
 app.MapControllerRoute(

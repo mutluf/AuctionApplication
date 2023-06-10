@@ -9,7 +9,6 @@ public class AuctionAppDbContext : IdentityDbContext<AppUser, Role, int>
     public AuctionAppDbContext(DbContextOptions options) : base(options)
     {
     }
-
     public DbSet<Offer> Offers { get; set; }
     public DbSet<AppUserAuction> AppUserAuctions { get; set; }
 

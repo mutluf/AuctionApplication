@@ -7,6 +7,7 @@
 
 </head>
 <body>
+
     <div class="row" style="height:480px; width:auto">
         <div @*class="col-lg-8 offset-lg-2 text-center">*@>
             <div class="section-title">
@@ -18,7 +19,6 @@
                 @foreach (var item in Model)
                 {
                     <input type="hidden" id="Id" value="@item.Id" />
-                    @*class="col-lg-2 col-md-2 col-sm-4 col-xs-6 text-center"*@
 
                     <div class="col-lg-4 col-md-6 text-center">
                         <div class="single-product-item">
@@ -27,8 +27,8 @@
                                     <img src="@item.Image" style="height:240px; width:auto" />
                                 </a>
                             </div>
-                            <h3>@item.Name</h3>
-                            <p><span>Başlangıç Tarihi: </span>@item.BeginDate </p>
+                            <h3 style="color:sandybrown">@item.Name</h3>
+                            <p><span>Başlangıç Tarihi: </span>@item.BeginDate  </p>
 
 
                             <a asp-controller="Product" asp-action="ProductDetail" asp-route-id=@item.Id class="cart-btn" style="background-color:slategray !important">

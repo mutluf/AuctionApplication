@@ -4,6 +4,6 @@ namespace AuctionApp.Application.DTOs.Responses.AuctionResponses
 {
     public class GetLiveAuctionsResponse
     {
-        public List<Product> Products { get; set; }
+        public List<AuctionDTO> Auctions { get; set; }
     }
 }

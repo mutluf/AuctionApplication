@@ -3,7 +3,7 @@
 
 namespace AuctionApp.Infrastructure.Hubs
 {
-    public class ProductHub: Hub
+    public class OfferHub: Hub
     {
         public async Task SendMessageAsync()
         {

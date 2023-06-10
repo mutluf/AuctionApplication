@@ -12,6 +12,8 @@
                 <div class="single-product-img">
                     <img src="@Model.Image" style="height:480px" alt="">
                 </div>
+                <br />
+                <div id="countdown" style="color:coral; font-weight:500"></div>
             </div>
             <div class="col-md-7">
                 <div class="single-product-content">
@@ -23,7 +25,7 @@
                         @Model.Description
                     </p>
 
-                    <p class="single-product-pricing"><span>Başlangıç Tarifi</span>@Model.BeginDate</p>
+                    <p class="single-product-pricing"><span>Başlangıç Tarihi</span>@Model.BeginDate</p>
                             
                 </div>
             </div>
@@ -32,4 +34,31 @@
 </div>
 <!-- end single product -->
 
+
+@section scripts{
+    <script>
+        var registerDate = new Date('@Model.BeginDate.ToString("yyyy-MM-ddTHH:mm:ss")');
+
+        var timer = setInterval(function () {
+
+            var currentDate = new Date().getTime();
+
+            var remainingTime = registerDate - currentDate;
+            var days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+
+            $('#countdown').html(days + ' gün, ' + hours + ' saat, ' + minutes + ' dakika, ' + seconds + ' saniye kaldı...');
+
+
+            if (remainingTime < 0) {
+                clearInterval(timer);
+                $('#countdown').html('Geri sayım tamamlandı');
+            }
+        }, 1000);
+    </script>
+
+}
 

@@ -21,6 +21,7 @@ namespace AuctionApp.Application.Features.Queries.ProductQueries
 
         public async Task<GetIsNotInAuctionProductResponse> Handle(GetIsNotInAuctionProductRequest request, CancellationToken cancellationToken)
         {
+            //List<Product> products = _productRepository.GetWhere(p => DateTime.Compare(p.BeginDate, DateTime.Now) == 1).ToList();
             List<Product> products = _productRepository.GetWhere(product => product.IsInAuction == false).ToList();
             var response = _mapper.Map<IEnumerable<ProductDTO>>(products);
 

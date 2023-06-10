@@ -1,13 +1,12 @@
 ﻿using AuctionApp.Application.DTOs.Requests.ProductRequests;
 using AuctionApp.Application.DTOs.Responses.ProductResponses;
 using AuctionApp.Application.Repositories;
-using AuctionApp.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuctionApp.Web.Controllers
 {
-	public class ProductController : Controller
+    public class ProductController : Controller
     {
         private readonly IMediator _mediator;
         private readonly IProductRepository _productRepository;

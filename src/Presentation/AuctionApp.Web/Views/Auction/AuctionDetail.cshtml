@@ -5,29 +5,42 @@
     ViewData["Title"] = "AuctionDetail";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <div class="single-product mt-150 mb-150">
     <div class="container">
         <div class="row">
             <div class="col-md-5">
                 <div class="single-product-img">
-                    <img src="@Model.Product.Image" style="height:480px" alt="">
+                    <img src="@Model.Product.Image" style="height:480px; position:fixed" alt="">
                 </div>
+               
             </div>
-            @* <input type="hidden" asp-for="Id" asp-action="Offer"/>*@
             <div class="col-md-7">
                 <div class="single-product-content">
-                    <h3>
+                    <h3 style="color:sandybrown">
                         @Model.Title
                     </h3>
-                    <span>Açılış Fiyatı</span>
-                    <p class="single-product-pricing">@Model.Product.BeginPrice</p>
-                    <span>Şu Anki Teklif</span>
-                    <p id="offer" class="single-product-pricing">@Model.OfferPrice</p>
-                    <p>@Model.Product.Description</p>
+                    <table class="table-borderless" style="margin:10px; margin-top:15px" >
+                        <thead>
+                            <tr>
+                                <td>
+                                    <span>Açılış Fiyatı</span>                                   
+                                </td>
+                                <td>
+                                    <span>Şu Anki Teklif</span>                                  
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <td>
+                            <p class="single-product-pricing">@Model.Product.BeginPrice</p>
+                            </td>
+                            <td>
+                            <p id="offer" class="single-product-pricing">@Model.OfferPrice</p>
+                            </td>
+                        </tbody>
+                    </table>
+                   
                     <div class="single-product-form">
-
-
 
                         <form id="offerForm">
 
@@ -36,20 +49,20 @@
                             <input type="hidden" name="beginPrice" value=@Model.Product.BeginPrice>
                             <input id="lastOfferPrice" type="hidden" name="lastOfferPrice" value="@Model.OfferPrice">
 
-                            <button onclick="submitForm()" type="button" class="btn btn-primary ">
+                            <button onclick="submitForm()" type="button" class="btn btn-primary " style="border-radius:50px; border:none; background-color:sandybrown; padding:10px ">
 
                                 Teklif Ver
                                 <i class="fas fa-handshake"></i>
                             </button>
+                            <br />
+                            <br />
+                            <p>@Model.Product.Description</p>
                         </form>
-
+                      
                         <div class="more-products mb-150">
                             <br />
                             <h5 color="purple" id="lastOffer"></h5>
-                        </div>
-
-
-
+                        </div>                        
                     </div>
                 </div>
             </div>
@@ -57,22 +70,20 @@
     </div>
 
 
+    <style>
+        .single-product-pricing {
+            display: inline-block;
+            margin-right: 40px;
+        }
+        td {
+            padding-right: 40px;
+            text-align:center;
+        }
+    </style>
 
-
-    @section scripts
-    {
-        @*<script>
-                $(function () {
-                    $("#buton").click(function () {
-                        var yeniMetin = $("#inputVeri").val(); // Kullanıcıdan girilen metni al
-                        $("#offer").text(yeniMetin); // Metni değiştir
-                    });
-                });
-            </script>*@
         <script>
-            function submitForm() {
-               
-
+           
+            function submitForm() {              
                 var formData = $('#offerForm').serializeArray();
                 
                 var jsonData = {};
@@ -95,13 +106,10 @@
                         else {
                             toastr.warning(data.message);
                         }
-
-
                     },
                     error: function (data) {
                         alert("hata")
                     }
-
                 });
 
                 $("#offerForm").trigger("reset");
@@ -118,57 +126,6 @@
                 var offer = `${json.UserName} isimli kullanıcının teklifi:&nbsp &nbsp $${json.OfferPrice}`;
 
                 $("#lastOffer").html(offer);
-
             });
-
-
-
-
-
         </script>
-
-
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!-- end single product -->
-    @*<!-- more products -->
-        <div class="more-products mb-150">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 offset-lg-2 text-center">
-                        <div class="section-title">
-                            <h3><span class="orange-text">Related</span> Products</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, fuga quas itaque eveniet beatae optio.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4 col-md-6 text-center">
-                        <div class="single-product-item">
-                            <div class="product-image">
-                                <a href="single-product.html"><img src="~/assets/img/products/product-img-1.jpg" alt=""></a>
-                            </div>
-                            <h3>Strawberry</h3>
-                            <p class="product-price"><span>Per Kg</span> 85$ </p>
-
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-        </div>*@
-
-    <!-- end more products -->

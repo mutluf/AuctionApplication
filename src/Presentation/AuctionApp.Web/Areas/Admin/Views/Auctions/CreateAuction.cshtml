@@ -24,7 +24,7 @@
         <div class="form-group">
             <label asp-for="ExpirationTime" class="control-label col-md-2"></label>
             <div class="col-md-10">
-                <input type="date" asp-for="ExpirationTime" class="form-control" />
+                <input type="datetime-local" asp-for="ExpirationTime" class="form-control" />
                 <span asp-validation-for="ExpirationTime" class="text-danger"></span>
             </div>
         </div>

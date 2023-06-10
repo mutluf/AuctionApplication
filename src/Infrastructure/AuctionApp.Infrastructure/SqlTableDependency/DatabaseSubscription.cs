@@ -1,14 +1,13 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using AuctionApp.Application.DTOs;
+using AuctionApp.Domain.Entities;
+using AuctionApp.Infrastructure.Hubs;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using AuctionApp.Application.Repositories;
-using AuctionApp.Domain.Entities;
-using AuctionApp.Infrastructure.Hubs;
-using TableDependency.SqlClient;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Identity;
+using TableDependency.SqlClient;
 
 namespace AuctionApp.Infrastructure.SqlTableDependency
 {
@@ -20,17 +19,15 @@ namespace AuctionApp.Infrastructure.SqlTableDependency
     {
         SqlTableDependency<T> _tableDependency;
         IConfiguration _configuration;
-        IHubContext<ProductHub> _hubContext;
+        IHubContext<OfferHub> _hubContext;
         private readonly IServiceScopeFactory _serviceScopeFactory;
         
 
-
-        public DatabaseSubscription(IConfiguration configuration, IHubContext<ProductHub> hubContext, IServiceScopeFactory serviceScopeFactory)
+        public DatabaseSubscription(IConfiguration configuration, IHubContext<OfferHub> hubContext, IServiceScopeFactory serviceScopeFactory)
         {
             _configuration = configuration;
             _hubContext = hubContext;
-            _serviceScopeFactory = serviceScopeFactory;
-            
+            _serviceScopeFactory = serviceScopeFactory;            
         }
 
         public void Configure(string tableName)
@@ -38,7 +35,6 @@ namespace AuctionApp.Infrastructure.SqlTableDependency
             _tableDependency = new SqlTableDependency<T>(_configuration.GetConnectionString("DefaultConnection"), tableName);
             _tableDependency.OnChanged += async (o, e) =>
             {
-                //List<Product> datas;
                 List<Offer> datas;
                 T dataBack = new T();
                 UserManager<AppUser> _userManager;
@@ -47,25 +43,11 @@ namespace AuctionApp.Infrastructure.SqlTableDependency
                 using (var scope = _serviceScopeFactory.CreateScope())
                 {
                      _userManager = scope.ServiceProvider.GetService<UserManager<AppUser>>();
-
-
-                    //datas= myScopedService.GetAll().ToList();
-                    //var datas2 = myScopedService.GetAll().Include(data => data.Category);
-                    //foreach (var item in datas2)
-                    //{
-                    //    item.CategoryName = item.Category.CategoryName;
-                    //}
-                    //datas = datas2.ToList();
-
-
                     dataBack = e.Entity;
 
-
-                    //datas = myScopedService.GetAll().ToList();
                      offer = (Offer)Convert.ChangeType(dataBack, typeof(Offer));
                      user = await _userManager.FindByIdAsync(offer.UserId.ToString());
-                }
-                
+                }               
 
                 OfferUserDTO dto = new OfferUserDTO
                 {
@@ -85,21 +67,11 @@ namespace AuctionApp.Infrastructure.SqlTableDependency
 
             };
             _tableDependency.Start();
-
-
         }
+
         ~DatabaseSubscription()
         {
             _tableDependency.Stop();
         }
-
-
     }
-}
-class OfferUserDTO
-{
-    public int OfferPrice { get; set; }
-    public string UserName { get; set; }
-    public int AuctionId { get; set; } 
-    public int UserId { get; set; }
 }

@@ -18,11 +18,11 @@ namespace AuctionApp.Web.Controllers
         }
 
         public async Task<IActionResult> Index(GetAllAuctionsRequest request)
-		{
-            
+        {
+
             GetAllAuctionsResponse response = await _mediator.Send(request);
-			return View(response.Auctions);
-		}
+            return View(response.Auctions);
+        }
 
         [HttpGet]
         public async Task<IActionResult> AuctionDetail(GetAuctionByIdRequest request)

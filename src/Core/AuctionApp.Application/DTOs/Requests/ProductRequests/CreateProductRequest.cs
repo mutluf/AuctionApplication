@@ -9,6 +9,7 @@ namespace AuctionApp.Application.DTOs.Requests.ProductRequests
         public string Description { get; set; }
         public string Image { get; set; }
         public int BeginPrice { get; set; }
+        public DateTime BeginDate { get; set; }
 		public bool? IsSold { get; set; }
 	}
 }
