@@ -1,6 +1,6 @@
 # AuctionApp
 
-Uygulama Demo: https://www.youtube.com/watch?v=hk2obq5zB60
+Uygulama Demo:  https://www.youtube.com/watch?v=hk2obq5zB60
 
 
 ### SqlTableDependency
