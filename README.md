@@ -1,5 +1,8 @@
 # AuctionApp
 
+## Uygulama Demo 
+https://www.youtube.com/watch?v=hk2obq5zB60
+
 
 ### SqlTableDependency
 SqlTableDependency, .NET platformunda kullanılabilen bir kütüphanedir. Bu kütüphane, SQL Server veri tabanındaki tablolardaki değişiklikleri algılamak ve bunları dinamik olarak takip etmek için tasarlanmıştır.
