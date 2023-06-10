@@ -11,7 +11,13 @@
 
     <title>Item List</title>
     <style>
-        /* Add your desired CSS styles here */
+        .text {
+            display: block;
+            width: 100px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
     </style>
 
 </head>
@@ -41,8 +47,11 @@
                             <tr>
                                 <td>@item.Id</td>
                                 <td>@item.Name</td>
-                                <td>@item.Description</td>
-                                <td>@item.Image</td>
+                                <td>
+                                    <span class="text">
+                                            @item.Description
+                                    </span></td>
+                                <td class="text">@item.Image</td>
                                 <td>@item.BeginPrice</td>
 
                                 <td>

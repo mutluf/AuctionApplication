@@ -10,9 +10,12 @@
         <div class="row">
             <div class="col-md-5">
                 <div class="single-product-img">
-                    <img src="@Model.Product.Image" style="height:480px; position:fixed" alt="">
+                    <img src="@Model.Product.Image" style="height:480px;" alt="">
                 </div>
-               
+                <div class="more-products mb-150">
+                    <br />
+                    <h5 style="color:sandybrown" id="lastOffer"></h5>
+                </div>
             </div>
             <div class="col-md-7">
                 <div class="single-product-content">
@@ -59,14 +62,12 @@
                             <p>@Model.Product.Description</p>
                         </form>
                       
-                        <div class="more-products mb-150">
-                            <br />
-                            <h5 color="purple" id="lastOffer"></h5>
-                        </div>                        
+                                           
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
 
@@ -81,51 +82,56 @@
         }
     </style>
 
-        <script>
-           
-            function submitForm() {              
-                var formData = $('#offerForm').serializeArray();
-                
-                var jsonData = {};
-                $(formData).each(function (index, obj) {
-                    jsonData[obj.name] = obj.value;
-                });
-                console.log(jsonData);
-                var data1 = JSON.stringify(jsonData)
+    @section scripts
+    {
+    <script>
 
-                $.ajax({
-                    type: "POST",
-                    url: "/Auction/Offer",
-                    contentType: "application/json; charset=utf-8",
-                    data: data1,
-                    success: function (data) {
-                        console.log(data.status)
-                        if (data.status == true) {
-                            toastr.success(data.message);
-                        }
-                        else {
-                            toastr.warning(data.message);
-                        }
-                    },
-                    error: function (data) {
-                        alert("hata")
-                    }
-                });
+        function submitForm() {
+            var formData = $('#offerForm').serializeArray();
 
-                $("#offerForm").trigger("reset");
-            }
-
-            let connection = new signalR.HubConnectionBuilder()
-                .withUrl("/offershub")
-                .build();
-            connection.start();
-            connection.on("receiveMessage", data => {
-                var json = JSON.parse(data);
-                $('#offer').text(json.OfferPrice);
-                $('#lastOfferPrice').val(json.OfferPrice);
-                var offer = `${json.UserName} isimli kullanıcının teklifi:&nbsp &nbsp $${json.OfferPrice}`;
-
-                $("#lastOffer").html(offer);
+            var jsonData = {};
+            $(formData).each(function (index, obj) {
+                jsonData[obj.name] = obj.value;
             });
-        </script>
+            console.log(jsonData);
+            var data1 = JSON.stringify(jsonData)
+
+            $.ajax({
+                type: "POST",
+                url: "/Auction/Offer",
+                contentType: "application/json; charset=utf-8",
+                data: data1,
+                success: function (data) {
+                    console.log(data.status)
+                    if (data.status == true) {
+                        toastr.success(data.message);
+                    }
+                    else {
+                        toastr.warning(data.message);
+                    }
+                },
+                error: function (data) {
+                    alert("hata")
+                }
+            });
+
+            $("#offerForm").trigger("reset");
+        }
+
+        let connection = new signalR.HubConnectionBuilder()
+            .withUrl("/offershub")
+            .build();
+        connection.start();
+        connection.on("receiveMessage", data => {
+            var json = JSON.parse(data);
+            $('#offer').text(json.OfferPrice);
+            $('#lastOfferPrice').val(json.OfferPrice);
+            var offer = `${json.UserName} isimli kullanıcının teklifi:&nbsp &nbsp $${json.OfferPrice}`;
+
+            $("#lastOffer").html(offer);
+        });
+    </script>
     }
+
+       
+    
